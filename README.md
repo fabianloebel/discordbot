@@ -1,10 +1,10 @@
-# First: Ignore the Bot name :D
+# First: Ignore the bot name :D
 
 This bot can:
 * Greet new members
 * Play music from all sources that are supported by youtube-dl
 
-# This Bot is frankensteined together from the following sources
+# This bot is frankensteined together from the following sources
 
 The music player part:
 - https://gist.github.com/vbe0201/ade9b80f2d3b64643d854938d40a0a2d
@@ -12,7 +12,7 @@ The music player part:
 Same thing but more functionality:
 - https://github.com/Lenart12/GodecBot
 
-# Creating a TOKEN
+# Creating a Token
 
 **TODO**
 
@@ -23,5 +23,6 @@ The Token and the Guild (aka the discord server name) have to be provided over a
 Its contents have to be:
 
 `DISCORD_TOKEN=TOKEN` 
+
 `DISCORD_GUILD=GUILD_NAME` 
 
