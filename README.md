@@ -22,6 +22,6 @@ The Token and the Guild (aka the discord server name) have to be provided over a
 
 Its contents have to be:
 
-`DISCORD_TOKEN=TOKEN`
-`DISCORD_GUILD=GUILD_NAME`
+`DISCORD_TOKEN=TOKEN` 
+`DISCORD_GUILD=GUILD_NAME` 
 
