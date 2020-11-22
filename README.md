@@ -14,11 +14,11 @@ Same thing but more functionality:
 
 # Creating a Token
 
-**TODO**
+https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
 
 # Providing Token
 
-The Token and the Guild (aka the discord server name) have to be provided over a file called .env in the same directory as the bot.
+The Token and the Guild (aka the discord server name) have to be provided over a file called `.env` in the same directory as the bot.
 
 Its contents have to be:
 
