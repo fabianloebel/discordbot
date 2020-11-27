@@ -17,7 +17,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         'audioformat': 'mp3',
         'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
         'restrictfilenames': True,
-        'noplaylist': True,
+        'noplaylist': False,
         'nocheckcertificate': True,
         'ignoreerrors': False,
         'logtostderr': False,
@@ -70,18 +70,22 @@ class YTDLSource(discord.PCMVolumeTransformer):
             raise YTDLError('Couldn\'t find anything that matches `{}`'.format(search))
 
         if 'entries' not in data:
+            # Case for normal Youtube videos
             process_info = data
+            webpage_url = process_info['webpage_url']
         else:
+            # Case for Youtube playlists
             process_info = None
             for entry in data['entries']:
                 if entry:
                     process_info = entry
+                    # Returned JSON has no key 'webpage_url', but rather the Video ID accessible at key 'url'
+                    webpage_url = "https://www.youtube.com/watch?v="+process_info['url']
                     break
 
             if process_info is None:
                 raise YTDLError('Couldn\'t find anything that matches `{}`'.format(search))
 
-        webpage_url = process_info['webpage_url']
         partial = functools.partial(cls.ytdl.extract_info, webpage_url, download=False)
         processed_info = await loop.run_in_executor(None, partial)
 
