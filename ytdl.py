@@ -64,29 +64,23 @@ class YTDLSource(discord.PCMVolumeTransformer):
         loop = loop or asyncio.get_event_loop()
 
         partial = functools.partial(cls.ytdl.extract_info, search, download=False, process=False)
-        print("Create source: Partial"+partial)
         data = await loop.run_in_executor(None, partial)
-        print("Create source: Data"+data)
 
         if data is None:
             raise YTDLError('Couldn\'t find anything that matches `{}`'.format(search))
 
         if 'entries' not in data:
-            print("Create source: Set process_info to data")
             process_info = data
         else:
             process_info = None
-            print("Create source: Iterate over entries")
             for entry in data['entries']:
                 if entry:
-                    print("Create source: Set process info to "+entry)
                     process_info = entry
                     break
 
             if process_info is None:
                 raise YTDLError('Couldn\'t find anything that matches `{}`'.format(search))
 
-        print(process_info)
         webpage_url = process_info['webpage_url']
         partial = functools.partial(cls.ytdl.extract_info, webpage_url, download=False)
         processed_info = await loop.run_in_executor(None, partial)
