@@ -274,14 +274,15 @@ class Music(commands.Cog):
 
         async with ctx.typing():
             try:
-                source = await ytdl.YTDLSource.create_source(ctx, search, loop=self.bot.loop)
+                sources = await ytdl.YTDLSource.create_source(ctx, search, loop=self.bot.loop)
             except ytdl.YTDLError as e:
                 await ctx.send('An error occurred while processing this request: {}'.format(str(e)))
             else:
-                song = voice.Song(source)
+                for source in sources:
+                    song = voice.Song(source)
 
-                await ctx.voice_state.songs.put(song)
-                await ctx.send('Enqueued {}'.format(str(source)))
+                    await ctx.voice_state.songs.put(song)
+                    await ctx.send('Enqueued {}'.format(str(source)))
 
     @commands.command(name='search')
     async def _search(self, ctx: commands.Context, *, search: str):
