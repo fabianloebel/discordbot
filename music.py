@@ -281,7 +281,10 @@ class Music(commands.Cog):
                     song = voice.Song(source)
 
                     await ctx.voice_state.songs.put(song)
-                    await ctx.send('Enqueued {}'.format(str(source)))
+            if len(sources) == 1:
+                await ctx.send('Enqueued {}'.format(str(source)))
+            else:
+                await ctx.send('Enqueued playlist with {} songs'.format(str(len(sources))))
 
     @commands.command(name='search')
     async def _search(self, ctx: commands.Context, *, search: str):
