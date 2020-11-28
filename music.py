@@ -106,7 +106,7 @@ class Music(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name='pause', aliases=['pa'])
-    @commands.has_permissions(manage_guild=True)
+    #@commands.has_permissions(manage_guild=True)
     async def _pause(self, ctx: commands.Context):
         """Pauses the currently playing song."""
         print(">>>Pause Command:")
@@ -115,7 +115,7 @@ class Music(commands.Cog):
             await ctx.message.add_reaction('⏯')
 
     @commands.command(name='resume', aliases=['re', 'res'])
-    @commands.has_permissions(manage_guild=True)
+    #@commands.has_permissions(manage_guild=True)
     async def _resume(self, ctx: commands.Context):
         """Resumes a currently paused song."""
 
