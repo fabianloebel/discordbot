@@ -50,7 +50,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.description = data.get('description')
         self.duration = self.parse_duration(int(data.get('duration')))
         self.tags = data.get('tags')
-        self.url = data.get('url')
+        self.url = data.get('webpage_url')
         self.views = data.get('view_count')
         self.likes = data.get('like_count')
         self.dislikes = data.get('dislike_count')
@@ -94,6 +94,8 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
             if processed_info is None:
                 raise YTDLError('Couldn\'t fetch `{}`'.format(webpage_url))
+
+            print(processed_info)
 
             if 'entries' not in processed_info:
                 info = processed_info
