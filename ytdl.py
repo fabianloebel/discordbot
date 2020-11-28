@@ -17,7 +17,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         'audioformat': 'mp3',
         'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
         'restrictfilenames': True,
-        'noplaylist': False,
+        'noplaylist': True,
         'nocheckcertificate': True,
         'ignoreerrors': False,
         'logtostderr': False,
@@ -50,7 +50,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.description = data.get('description')
         self.duration = self.parse_duration(int(data.get('duration')))
         self.tags = data.get('tags')
-        self.url = ""#data.get('url')
+        self.url = data.get('url')
         self.views = data.get('view_count')
         self.likes = data.get('like_count')
         self.dislikes = data.get('dislike_count')
@@ -82,7 +82,6 @@ class YTDLSource(discord.PCMVolumeTransformer):
             for entry in data['entries']:
                 if entry:
                     process_info = entry
-                    print(process_info)
                     # Returned JSON has no key 'webpage_url', but rather the Video ID accessible at key 'url'
                     urls_to_play.append("https://www.youtube.com/watch?v="+process_info['url'])
 
