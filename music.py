@@ -178,16 +178,16 @@ class Music(commands.Cog):
         items_per_page = 10
         pages = math.ceil(len(ctx.voice_state.songs) / items_per_page)
 
-        start = (page - 1) * items_per_page
+        start = (page * items_per_page) - 1
         end = start + items_per_page
 
         queue = ''
         for i, song in enumerate(ctx.voice_state.songs[start:end], start=start):
             queue += '`{0}.` [**{1.source.title}**]({1.source.url})\n'.format(i + 1, song)
 
-            embed = (discord.Embed(description='**{} tracks:**\n\n{}'.format(len(ctx.voice_state.songs), queue))
+        embed = (discord.Embed(description='**{} tracks:**\n\n{}'.format(len(ctx.voice_state.songs), queue))
                  .set_footer(text='Viewing page {}/{}'.format(page, pages)))
-            await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name='history')
     async def _history(self, ctx: commands.Context, *, page: int = 1):
