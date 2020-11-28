@@ -178,7 +178,7 @@ class Music(commands.Cog):
         items_per_page = 10
         pages = math.ceil(len(ctx.voice_state.songs) / items_per_page)
 
-        start = (page * items_per_page) - 1
+        start = (page - 1) * items_per_page
         end = page * items_per_page
 
         queue = ''
