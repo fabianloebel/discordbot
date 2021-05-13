@@ -4,3 +4,4 @@ youtube_dl
 PyNaCl
 bs4
 httpx
+ffmpeg
