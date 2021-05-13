@@ -6,7 +6,7 @@ This bot can:
 
 # Setup
 
-## Requirenments
+## Requirements
 
 All the requirements are listed in the `requirements` file.
 They can be installed directly or in a [venv](https://docs.python.org/3/library/venv.html) with:
