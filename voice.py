@@ -67,7 +67,7 @@ class VoiceState:
         self.exists = True
 
         self._loop = False
-        self._autoplay = True
+        self._autoplay = False
         self._volume = 0.5
         self.skip_votes = set()
 
@@ -117,9 +117,11 @@ class VoiceState:
                 # If no song will be added to the queue in time,
                 # the player will disconnect due to performance
                 # reasons.
+
+                # FIXME: Find bug that halts music playing
                 if self.autoplay and self.current:
                     try:
-                        async with timeout(3): 
+                        async with timeout(3):
                             self.current = await self.songs.get()
                     except asyncio.TimeoutError:
                         # Spoof user agent to show whole page.
@@ -152,7 +154,7 @@ class VoiceState:
                                 if recommended_url == song.source.url:
                                     not_in_history = False
                                     break
-                            
+
                             if not_in_history:
                                 next_song = recommended_url
                                 break
@@ -169,15 +171,17 @@ class VoiceState:
                                 song = Song(source)
                                 self.current = song
                                 await ctx.send('Autoplaying {}'.format(str(source)))
-                        
+
                 else:
-                    try:
-                        async with timeout(180):  # 3 minutes
-                            self.current = await self.songs.get()
-                    except asyncio.TimeoutError:
-                        self.bot.loop.create_task(self.stop())
-                        self.exists = False
-                        return
+                    # FIXME: Remove workaround and fix: "play not working after last song finished playing issue"
+
+                    #try:
+                        #async with timeout(180):  # 3 minutes
+                    self.current = await self.songs.get()
+                    #except asyncio.TimeoutError:
+                    #    self.bot.loop.create_task(self.stop())
+                    #    self.exists = False
+                    #    return
                 
                 self.song_history.insert(0, self.current)
                 self.current.source.volume = self._volume
