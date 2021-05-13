@@ -8,10 +8,22 @@ This bot can:
 
 ## Requirenments
 
-All the requirenments are listed in the `requirenments` file.
+All the requirements are listed in the `requirements` file.
 They can be installed directly or in a [venv](https://docs.python.org/3/library/venv.html) with:
 
-`pip3 install -r requirenments`
+`pip3 install -r requirements`
+
+Next to those requirements you also need ffmpeg installed on the machine that is running the bot:
+
+### Linux
+
+    TODO: will be added in the future but please just google
+
+### Windows 
+
+* Download prebuilt: https://www.gyan.dev/ffmpeg/builds/
+    * Move your download to prefered path
+    * [Add said path to PATH in Windows](https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14))
 
 ## Creating a Token
 
