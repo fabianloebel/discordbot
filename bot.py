@@ -29,4 +29,4 @@ async def on_error(event, *args, **kwargs):
 async def on_ready():
    print(f'{bot.user.name} has connected to Discord!') 
 
-bot.run(TOKEN)
+bot.run(_TOKEN)
