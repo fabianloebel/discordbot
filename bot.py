@@ -9,8 +9,8 @@ from music import *
 from greeter import *
 
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
+_TOKEN = os.getenv('DISCORD_TOKEN')
+_GUILD = os.getenv('DISCORD_GUILD')
 
 bot = commands.Bot(command_prefix='?')
 
