@@ -1,8 +1,8 @@
 import os
 import discord
+import random
 from discord.ext import commands
 from dotenv import load_dotenv
-from random import random
 
 class Greeter(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -34,7 +34,7 @@ class Greeter(commands.Cog):
 
         else:
             self._members[member.id] += 1
-            await ctx.send(random.choices(self._greets)+f' {member.name}')
+            await ctx.send(random.choice(self._greets)+f' {member.name}')
 
         if len(self._members) >= 30:
             await ctx.send(f' Too many people to memorize all of your .. I\'m just going to forget y\'all exist')
