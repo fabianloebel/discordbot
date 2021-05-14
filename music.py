@@ -87,17 +87,27 @@ class Music(commands.Cog):
 
     @commands.command(name='volume')
     @commands.has_permissions(manage_guild=True)
-    async def _volume(self, ctx: commands.Context, *, volume: int):
+    async def _volume(self, ctx: commands.Context, *, volume=None):
         """Sets the volume of the player."""
 
         if not ctx.voice_state.is_playing:
             return await ctx.send('Nothing being played at the moment.')
 
+        if volume is None or volume == '?':
+            return await ctx.send(f'Volume of the player set to {int(ctx.voice_state.current.source.volume * 100)}%')
+
+        try:
+            volume = int(volume)
+        except ValueError:
+            return await ctx.send('Volume must be between 0 and 100')
+        except Exception:
+            return await ctx.send('Volume must be between 0 and 100')
+
         if 0 > volume or volume > 100:
             return await ctx.send('Volume must be between 0 and 100')
 
         ctx.voice_state.current.source.volume = volume / 100
-        await ctx.send('Volume of the player set to {}%'.format(volume))
+        await ctx.send(f'Volume of the player set to {volume}%')
 
     @commands.command(name='now', aliases=['current', 'playing', 'np', 'nowplaying'])
     async def _now(self, ctx: commands.Context):

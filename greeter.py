@@ -40,8 +40,8 @@ class Greeter(commands.Cog):
             await ctx.send(f' Too many people to memorize all of your .. I\'m just going to forget y\'all exist')
             self._members = {}
 
-    @commands.command(name='bot', help='Gives general info about the bot.')
-    async def _bot(self, ctx, *, member: discord.Member = None):
+    @commands.command(name='about', help='Gives general info about the bot.')
+    async def _about(self, ctx, *, member: discord.Member = None):
         """Prints info on bot in general"""
 
         load_dotenv()
@@ -51,8 +51,10 @@ class Greeter(commands.Cog):
 
         # TODO use discord.utils.outh_url to auto generate URL
 
-        msg = 'This bot can stream music from youtube! \n' \
-              ' To add it to your server you can use the following invite url: \n'
-        msg += url
-        await ctx.send(msg)
+        msg = f'This bot can stream music from youtube! \n ' \
+              f'For an overview of all commands try `?help` \n\n' \
+              f'To add the Partybot to your server you can use the following [invite!]({url})\n'
+
+        embed = discord.Embed(description=f'**About Partybot** \n\n {msg}')
+        await ctx.send(embed=embed)
 
