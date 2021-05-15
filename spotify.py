@@ -1,4 +1,3 @@
-import random
 import spotipy
 import re
 import os
@@ -20,6 +19,7 @@ class Spotify:
         self.sp = spotipy.Spotify(client_credentials_manager=credentials)
 
     async def get_playlist(self, ctx, playlist_id):
+        """Get list of tracks in a playlist"""
         try:
             playlist = self.sp.playlist(playlist_id=playlist_id, market='DE')
         except spotipy.SpotifyException:
@@ -29,6 +29,7 @@ class Spotify:
         return [(item['track']['artists'][0]['name'], item['track']['name']) for item in playlist['tracks']['items']]
 
     async def get_album(self, ctx, album_id):
+        """Get list of tracks in an album"""
         try:
             album = self.sp.album(album_id=album_id)
         except spotipy.SpotifyException:
@@ -38,6 +39,7 @@ class Spotify:
         return [(item['artists'][0]['name'], item['name']) for item in album['tracks']['items']]
 
     async def get_tracks(self, ctx, search):
+        """Get list of tracks in a playlist or album"""
         if 'playlist' in search:
             try:
                 playlist_id = re.search('playlist/(.+?)\?', search).group(1)
@@ -46,9 +48,7 @@ class Spotify:
                 return None
 
             playlist = await self.get_playlist(ctx, playlist_id)
-
-            random.shuffle(playlist)
-            return playlist[:10]
+            return playlist
 
         elif 'album' in search:
             try:
