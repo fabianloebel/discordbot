@@ -2,8 +2,7 @@
 import os
 import random
 from dotenv import load_dotenv
-
-from discord.ext import commands 
+from discord.ext import commands
 
 from music import *
 from greeter import *

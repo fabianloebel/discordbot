@@ -1,14 +1,17 @@
 import math
+import random
 
 import discord
 from discord.ext import commands
 
 import ytdl
 import voice
+from spotify import Spotify
 
 class Music(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.sp = Spotify()
         self.voice_states = {}
 
     def get_voice_state(self, ctx: commands.Context):
@@ -278,23 +281,39 @@ class Music(commands.Cog):
         A list of these sites can be found here: https://rg3.github.io/youtube-dl/supportedsites.html
         """
 
+        sources = []
+
         if not ctx.voice_state.voice:
             await ctx.invoke(self._join)
 
         async with ctx.typing():
-            try:
-                sources = await ytdl.YTDLSource.create_source(ctx, search, loop=self.bot.loop)
-            except ytdl.YTDLError as e:
-                await ctx.send('An error occurred while processing this request: {}'.format(str(e)))
-            else:
-                for source in sources:
-                    song = voice.Song(source)
+            if "spotify.com" in search: # Spotify link
 
-                    await ctx.voice_state.songs.put(song)
+                tracks = await self.sp.get_tracks(ctx, search)
+                if tracks is None:
+                    return
+
+                for (artist, song) in list(tracks):
+                    try:
+                        source = await ytdl.YTDLSource.create_source(ctx, artist + ' ' + song, loop=self.bot.loop)
+                        sources.append(source[0])
+                    except ytdl.YTDLError:
+                        await ctx.send(f'Couldn\'t retrieve any matches for `{artist} {song}`')
+
+            else: # Text search
+                try:
+                    sources = await ytdl.YTDLSource.create_source(ctx, search, loop=self.bot.loop)
+                except ytdl.YTDLError as e:
+                    await ctx.send(f'An error occurred while processing this request: {str(e)}')
+                    return
+
+            for source in sources:
+                song = voice.Song(source)
+                await ctx.voice_state.songs.put(song)
             if len(sources) == 1:
-                await ctx.send('Enqueued {}'.format(str(source)))
+                await ctx.send(f'Enqueued {str(source)}')
             else:
-                await ctx.send('Enqueued playlist with {} songs'.format(str(len(sources))))
+                await ctx.send(f'Enqueued playlist with {str(len(sources))} songs')
 
     @commands.command(name='search')
     async def _search(self, ctx: commands.Context, *, search: str):
