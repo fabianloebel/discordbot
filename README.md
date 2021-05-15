@@ -2,7 +2,7 @@
 
 This bot can:
 * Greet new members
-* Play music from all sources that are supported by youtube-dl
+* Play music from youtube
 
 # Setup
 
@@ -40,15 +40,21 @@ Arch: `sudo pacman -S ffmpeg`
 
 https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
 
-## Providing Token
+## Providing secrets
 
 The token and the guild (aka the discord server name) have to be provided over a file called `.env` in the same directory as the bot.
 
 Its contents have to be:  
   
-`DISCORD_TOKEN=TOKEN`   
+`DISCORD_TOKEN=<TOKEN>`   
 
-`DISCORD_GUILD=GUILD_NAME` 
+`DISCORD_GUILD=<GUILD_NAME>`
+
+For spotify link support a client ID and secret are also needed:  
+
+`SPOTIFY_CLIENT_ID=<ID>`  
+
+`SPOTIFY_CLIENT_SECRET=<SECRET>`  
 
 # Start
 

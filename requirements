@@ -5,3 +5,4 @@ PyNaCl
 bs4
 httpx
 ffmpeg
+spotipy
