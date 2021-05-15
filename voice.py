@@ -109,7 +109,7 @@ class VoiceState:
             self.next.clear()
             self.now = None
 
-            if not self._loop:
+            if not self.loop:
                 # If autoplay is turned on wait 3 seconds for a new song.
                 # If no song is found find a new one,
                 # else if autoplay is turned off try to get the
@@ -190,7 +190,7 @@ class VoiceState:
                 await self.current.source.channel.send(embed=self.current.create_embed())
             
             #If the song is looped
-            elif self._loop:
+            elif self.loop:
                 self.song_history.insert(0, self.current)
                 self.now = discord.FFmpegPCMAudio(self.current.source.stream_url, **ytdl.YTDLSource.FFMPEG_OPTIONS)
                 self.voice.play(self.now, after=self.play_next_song)
