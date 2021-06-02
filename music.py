@@ -293,7 +293,7 @@ class Music(commands.Cog):
                 if tracks is None:
                     return
 
-                for (artist, song) in list(tracks)[:10]:
+                for (artist, song) in list(tracks):
                     try:
                         source = await ytdl.YTDLSource.create_source(ctx, artist + ' ' + song, loop=self.bot.loop)
                         sources.append(source[0])
