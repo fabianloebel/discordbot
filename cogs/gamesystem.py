@@ -1,8 +1,5 @@
-import os
-import discord
 from discord.ext import commands
-from dotenv import load_dotenv
-from pystemd.systemd1 import Unit
+#from pystemd.systemd1 import Unit
 
 
 class GameSystem(commands.Cog):
