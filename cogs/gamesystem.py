@@ -10,14 +10,15 @@ class GameSystem(commands.Cog):
         self.bot = bot
 
     @commands.command(name='state', help='Gets server state.')
-    def _get_service_state(self, ctx: commands.Context, *, service: str):
+    async def _get_service_state(self, ctx: commands.Context, *, service: str):
         service = service.decode("utf8", "ignore")
 
-        if service in ["vhserver", "sauerbraten-server", "cod4server", "dungeoncrawler"]:
-            unit = Unit(bytes(f'{service}.service', encoding='utf-8'))
-            unit.load()
+        async with ctx.typing():
+            if service in ["vhserver", "sauerbraten-server", "cod4server", "dungeoncrawler"]:
+                unit = Unit(bytes(f'{service}.service', encoding='utf-8'))
+                unit.load()
 
-            await ctx.send(f'[{service}] {unit.Unit.ActiveState}')
+                await ctx.send(f'[{service}] {unit.Unit.ActiveState}')
 
 
 
