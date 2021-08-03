@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 from pystemd.systemd1 import Unit
 
@@ -12,14 +13,15 @@ class GameSystem(commands.Cog):
 
         async with ctx.typing():
             states = ""
-            for service in ["vhserver", "sauerbraten-server", "cod4server", "dungeoncrawler"]:
+            embed = discord.Embed(title="Server status")
+            for service in ["vhserver", "sauerbraten-server", "cod4server"]:
                 unit = Unit(bytes(f'{service}.service', encoding='utf-8'))
                 unit.load()
                 
                 status = unit.Unit.ActiveState.decode("utf8")
-                states += f'\n[{service}] {status}'
+                embed.add_field(name=service, value=status)
 
-            await ctx.send(states)
+            await ctx.send(embed=embed)
 
 
 
