@@ -1,11 +1,7 @@
 # bot.py
-import os
-import random
-from dotenv import load_dotenv
-from discord.ext import commands
 
-from music import *
-from greeter import *
+from cogs.music import *
+from cogs.greeter import *
 
 load_dotenv()
 _TOKEN = os.getenv('DISCORD_TOKEN')
@@ -15,6 +11,7 @@ bot = commands.Bot(command_prefix='?')
 
 bot.add_cog(Greeter(bot))
 bot.add_cog(Music(bot))
+bot.add_cog(GameSystem(bot))
 
 @bot.event 
 async def on_error(event, *args, **kwargs): 
