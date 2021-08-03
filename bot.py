@@ -2,6 +2,7 @@
 
 from cogs.music import *
 from cogs.greeter import *
+from cogs.gamesystem import *
 
 load_dotenv()
 _TOKEN = os.getenv('DISCORD_TOKEN')
