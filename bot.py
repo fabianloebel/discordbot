@@ -12,7 +12,7 @@ bot = commands.Bot(command_prefix='?')
 
 bot.add_cog(Greeter(bot))
 bot.add_cog(Music(bot))
-#bot.add_cog(GameSystem(bot))
+bot.add_cog(GameSystem(bot))
 
 @bot.event 
 async def on_error(event, *args, **kwargs): 
