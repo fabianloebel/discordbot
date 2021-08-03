@@ -19,7 +19,7 @@ class GameSystem(commands.Cog):
                 unit.load()
                 
                 status = unit.Unit.ActiveState.decode("utf8")
-                embed.add_field(name=service, value=status)
+                embed.add_field(name=service, value=status, inline=True)
 
             await ctx.send(embed=embed)
 
