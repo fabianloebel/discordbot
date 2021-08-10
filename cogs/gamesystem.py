@@ -33,18 +33,20 @@ class GameSystem(commands.Cog):
 
         if (server is not None) and (action in self.actions.keys()):
             try:
-                status = subprocess.run(self.actions[action] + [server])
+                status = subprocess.check_output(self.actions[action] + [server])
             except Exception as e:
                 status = e
         else:
             status = 'Invalid server name'
 
-        return status
+        return status, server
 
     def get_status(self, service):
         unit = Unit(bytes(f'{service}.service', encoding='utf-8'))
         unit.load()
         status = unit.Unit.ActiveState.decode("utf8")
+
+        print(status)
         return status
 
     @commands.group(pass_context = True, help='Server status parent command')
@@ -59,7 +61,7 @@ class GameSystem(commands.Cog):
             embed = discord.Embed(title="Server status")
             embed.set_thumbnail(url='https://dungeoncrawler.xyz/img/favicons/favicon.png')
             for service in self.services.keys():
-                status = self.get_status()
+                status = self.get_status(service)
                 embed.add_field(name=f"{self.services[service]} server", value=status, inline=False)
 
             await ctx.send(embed=embed)
@@ -67,26 +69,31 @@ class GameSystem(commands.Cog):
     @server.command()
     async def stop(self, ctx:commands.Context, *, service = None):
         async with ctx.typing():
-            
-            status = self.run_command(service, "stop")
-            if self.get_status(service) != "inactive":
-                status = f"Stopping {service} failed: {status}"
-            else:
-                status = f"Stopping {service} succeeded!"
+            embed = discord.Embed(title="Server status")
+            embed.set_thumbnail(url='https://dungeoncrawler.xyz/img/favicons/favicon.png') 
 
-            await ctx.send(f'Server says: \n{status}')
+            status, server = self.run_command(service, "stop")
+            
+            if self.get_status(server) != "inactive":
+                embed.add_field(name=f"Stopping {service} failed!", value=status, inline=False)
+            else:
+                embed.add_field(name=f"Stopping {service} succeeded!", value=f"{server} inactive", inline=False)
+
+            await ctx.send(embed=embed)
 
     @server.command()
     async def start(self, ctx:commands.Context, *, service = None):
         async with ctx.typing():
-            
-            status = self.run_command(service, "start")
-            if self.get_status(service) != "active":
-                status = f"Starting {service} failed: {status}"
+            embed = discord.Embed(title="Server status")
+            embed.set_thumbnail(url='https://dungeoncrawler.xyz/img/favicons/favicon.png') 
+
+            status, server = self.run_command(service, "start")
+
+            if self.get_status(server) != "active":
+                embed.add_field(name=f"Starting {service} failed!", value=status, inline=False)
             else:
-                status = f"Starting {service} succeeded!"
+                embed.add_field(name=f"Starting {service} succeeded!", value=f"{server} active", inline=False)
 
-
-            await ctx.send(f'Server says: \n{status}')
+            await ctx.send(embed=embed)
 
     
