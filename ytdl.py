@@ -2,7 +2,7 @@ import asyncio
 import functools
 
 import discord
-import youtube_dl
+import yt_dlp
 from discord.ext import commands
 
 youtube_dl.utils.bug_reports_message = lambda: ''
@@ -32,7 +32,8 @@ class YTDLSource(discord.PCMVolumeTransformer):
         'options': '-vn',
     }
 
-    ytdl = youtube_dl.YoutubeDL(YTDL_OPTIONS)
+    #ytdl = youtube_dl.YoutubeDL(YTDL_OPTIONS)
+    ytdl = yt_dlp.YoutubeDL(YTDL_OPTIONS)
 
     def __init__(self, ctx: commands.Context, source: discord.FFmpegPCMAudio, *, data: dict, volume: float = 0.5):
         super().__init__(source, volume)
@@ -83,7 +84,8 @@ class YTDLSource(discord.PCMVolumeTransformer):
                 if entry:
                     process_info = entry
                     # Returned JSON has no key 'webpage_url', but rather the Video ID accessible at key 'url'
-                    urls_to_play.append("https://www.youtube.com/watch?v="+process_info['url'])
+                    #urls_to_play.append("https://www.youtube.com/watch?v="+process_info['url'])
+                    urls_to_play.append(process_info['url'])
 
             if process_info is None:
                 raise YTDLError('Couldn\'t find anything that matches `{}`'.format(search))
