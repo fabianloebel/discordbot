@@ -5,7 +5,7 @@ import discord
 import yt_dlp
 from discord.ext import commands
 
-youtube_dl.utils.bug_reports_message = lambda: ''
+yt_dlp.utils.bug_reports_message = lambda: ''
 
 class YTDLError(Exception):
     pass
