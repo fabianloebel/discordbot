@@ -150,6 +150,17 @@ class Music(commands.Cog):
             ctx.voice_state.voice.stop()
             await ctx.message.add_reaction('⏹')
 
+    @commands.command(name='clear', aliases=['c'])
+    async def _clear(self, ctx: commands.Context):
+        """Clear current playlist"""
+
+        voter = ctx.message.author
+        if voter.guild_permissions.administrator:
+            ctx.voice_state.songs.clear()
+            await ctx.message.add_reaction('⏏')
+        else:
+            await ctx.send('You do not have the permission to clear the queue.')
+
 
     @commands.command(name='skip', aliases=['s'])
     async def _skip(self, ctx: commands.Context):
@@ -289,6 +300,7 @@ class Music(commands.Cog):
             if "spotify.com" in search: # Spotify link
 
                 tracks = await self.sp.get_tracks(ctx, search)
+
                 if tracks is None:
                     return
 
@@ -341,7 +353,26 @@ class Music(commands.Cog):
                     song = voice.Song(source)
                     await ctx.voice_state.songs.put(song)
                     await ctx.send('Enqueued {}'.format(str(source)))
-            
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+    
+        if not member.id == self.bot.user.id:
+            return
+    
+        elif before.channel is None:
+            voice = after.channel.guild.voice_client
+            time = 0
+            while True:
+                await asyncio.sleep(1)
+                time = time + 1
+                if voice.is_playing() and not voice.is_paused():
+                    time = 0
+                if time == 600:
+                    await voice.disconnect()
+                if not voice.is_connected():
+                    break
+    
     @_join.before_invoke
     @_play.before_invoke
     async def ensure_voice_state(self, ctx: commands.Context):
