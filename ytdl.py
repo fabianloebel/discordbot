@@ -97,7 +97,8 @@ class YTDLSource(discord.PCMVolumeTransformer):
             if processed_info is None:
                 raise YTDLError('Couldn\'t fetch `{}`'.format(webpage_url))
 
-            print(processed_info)
+            # Highly verbose output of accessed content!
+            #print(processed_info)
 
             if 'entries' not in processed_info:
                 info = processed_info
