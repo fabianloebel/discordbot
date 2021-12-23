@@ -1,5 +1,6 @@
 import math
 import random
+import asyncio
 
 import discord
 from discord.ext import commands
@@ -7,6 +8,10 @@ from discord.ext import commands
 import ytdl
 import voice
 from spotify import Spotify
+
+
+def setup(bot: commands.Bot):
+        bot.add_cog(Music(bot))
 
 class Music(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -299,17 +304,25 @@ class Music(commands.Cog):
         async with ctx.typing():
             if "spotify.com" in search: # Spotify link
 
-                tracks = await self.sp.get_tracks(ctx, search)
+                try:
+                    tracks = await self.sp.get_tracks(ctx, search)
+                except Exception:
+                    await ctx.send(f'Could not get list of all tracks from link `{search}`')
+                    return
 
                 if tracks is None:
                     return
 
-                for (artist, song) in list(tracks):
+                for i, (artist, song) in enumerate(list(tracks)):
                     try:
                         source = await ytdl.YTDLSource.create_source(ctx, artist + ' ' + song, loop=self.bot.loop)
                         sources.append(source[0])
                     except ytdl.YTDLError:
                         await ctx.send(f'Couldn\'t retrieve any matches for `{artist} {song}`')
+                    except BlockingIOError:
+                        # Only occurs if multiple songs are loaded
+                        await ctx.send(f"Received BlockingIOError!\nBut {i}/{len(tracks)} songs loaded succesfully!")
+                        break
 
             else: # Text search
                 try:
