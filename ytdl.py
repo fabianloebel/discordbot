@@ -32,8 +32,13 @@ class YTDLSource(discord.PCMVolumeTransformer):
         'options': '-vn',
     }
 
-    #ytdl = youtube_dl.YoutubeDL(YTDL_OPTIONS)
-    ytdl = yt_dlp.YoutubeDL(YTDL_OPTIONS)
+    def extract_only(webpage_url, ytdl_options):
+        with yt_dlp.YoutubeDL(ytdl_options) as ydl:
+            return ydl.extract_info(webpage_url, download=False)
+    
+    def search_extract_only(search, ytdl_options):
+        with yt_dlp.YoutubeDL(ytdl_options) as ydl:
+            return ydl.extract_info(search, download=False, process=False)
 
     def __init__(self, ctx: commands.Context, source: discord.FFmpegPCMAudio, *, data: dict, volume: float = 0.5):
         super().__init__(source, volume)
@@ -67,8 +72,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
         loop = loop or asyncio.get_event_loop()
 
-        partial = functools.partial(cls.ytdl.extract_info, search, download=False, process=False)
-        data = await loop.run_in_executor(None, partial)
+        data = await loop.run_in_executor(None, search_extract_only, search, cls.YTDL_OPTIONS)
 
         if data is None:
             raise YTDLError('Couldn\'t find anything that matches `{}`'.format(search))
@@ -91,8 +95,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
                 raise YTDLError('Couldn\'t find anything that matches `{}`'.format(search))
 
         for webpage_url in urls_to_play:
-            partial = functools.partial(cls.ytdl.extract_info, webpage_url, download=False)
-            processed_info = await loop.run_in_executor(None, partial)
+            processed_info = await loop.run_in_executor(None, extract_only, webpage_url, cls.YTDL_OPTIONS)
 
             if processed_info is None:
                 raise YTDLError('Couldn\'t fetch `{}`'.format(webpage_url))
