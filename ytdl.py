@@ -7,6 +7,14 @@ from discord.ext import commands
 
 yt_dlp.utils.bug_reports_message = lambda: ''
 
+def extract_only(webpage_url, ytdl_options):
+    with yt_dlp.YoutubeDL(ytdl_options) as ydl:
+        return ydl.extract_info(webpage_url, download=False)
+
+def search_extract_only(search, ytdl_options):
+    with yt_dlp.YoutubeDL(ytdl_options) as ydl:
+        return ydl.extract_info(search, download=False, process=False)
+
 class YTDLError(Exception):
     pass
 
@@ -31,14 +39,6 @@ class YTDLSource(discord.PCMVolumeTransformer):
         'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
         'options': '-vn',
     }
-
-    def extract_only(webpage_url, ytdl_options):
-        with yt_dlp.YoutubeDL(ytdl_options) as ydl:
-            return ydl.extract_info(webpage_url, download=False)
-    
-    def search_extract_only(search, ytdl_options):
-        with yt_dlp.YoutubeDL(ytdl_options) as ydl:
-            return ydl.extract_info(search, download=False, process=False)
 
     def __init__(self, ctx: commands.Context, source: discord.FFmpegPCMAudio, *, data: dict, volume: float = 0.5):
         super().__init__(source, volume)
