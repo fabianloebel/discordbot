@@ -3,6 +3,10 @@ from discord.ext import commands
 from pystemd.systemd1 import Unit
 import subprocess
 
+
+def setup(bot: commands.Bot):
+        bot.add_cog(GameSystem(bot))
+
 class GameSystem(commands.Cog):
 
     actions = {

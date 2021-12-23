@@ -4,6 +4,10 @@ import random
 from discord.ext import commands
 from dotenv import load_dotenv
 
+
+def setup(bot: commands.Bot):
+        bot.add_cog(Greeter(bot))
+
 class Greeter(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
