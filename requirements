@@ -1,6 +1,6 @@
 python-dotenv
 discord
-youtube-dl
+yt-dlp
 PyNaCl
 bs4
 httpx
