@@ -1,4 +1,7 @@
-.env
-*.swp
 venv
+.env
+.idea/
+.cache/
+*.log
+*.swp
 __pycache__*
