@@ -82,6 +82,6 @@ class Spotify:
             return album
 
         else:
-            await ctx.send(f'Only playlist and album links are supported!')
+            await ctx.send(f'Only track, playlist and album links are supported!')
             return None
 
