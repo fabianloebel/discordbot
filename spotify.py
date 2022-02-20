@@ -18,6 +18,16 @@ class Spotify:
         credentials = spotipy.SpotifyClientCredentials(client_id=_CLIENT_ID, client_secret=_CLIENT_SECRET)
         self.sp = spotipy.Spotify(client_credentials_manager=credentials)
 
+    async def get_track(self, ctx, track_id):
+        """Get track name from link"""
+        try:
+            track = self.sp.track(track_id=track_id, market='DE')
+        except spotipy.SpotifyException:
+            await ctx.send(f'Couldn\'t access track!')
+            return None
+
+        return [(track['artists'][0]['name'], track['name'])]
+
     async def get_playlist(self, ctx, playlist_id):
         """Get list of tracks in a playlist"""
         try:
@@ -40,6 +50,16 @@ class Spotify:
 
     async def get_tracks(self, ctx, search):
         """Get list of tracks in a playlist or album"""
+        if 'track' in search:
+            try:
+                track_id = re.search('track/(.+?)\?', search).group(1)
+            except AttributeError:
+                await ctx.send(f'Couldn\'t find a track id in the link!')
+                return None
+
+            playlist = await self.get_track(ctx, track_id)
+            return playlist
+
         if 'playlist' in search:
             try:
                 playlist_id = re.search('playlist/(.+?)\?', search).group(1)
