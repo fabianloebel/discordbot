@@ -1,7 +1,9 @@
-import discord
 from discord.ext import commands
 from pystemd.systemd1 import Unit
+from dotenv import load_dotenv
 import subprocess
+import discord
+import os
 
 
 def setup(bot: commands.Bot):
@@ -53,6 +55,19 @@ class GameSystem(commands.Cog):
         print(status)
         return status
 
+    def check_guild(self, ctx):
+        load_dotenv()
+        required_id = os.getenv('DISCORD_GUILD_ID') 
+        current_id = str(ctx.guild.id);
+
+        if required_id == current_id:
+            return True
+        else:
+            print(f"Invalid guild id: Got {current_id} but required {required_id}")
+            return False
+
+
+
     @commands.group(pass_context = True, help='Server status parent command')
     @commands.has_role("@server")
     async def server(self, ctx: commands.Context):
@@ -72,6 +87,10 @@ class GameSystem(commands.Cog):
 
     @server.command()
     async def stop(self, ctx:commands.Context, *, service = None):
+        if not self.check_guild(ctx):
+            await ctx.send(f'Invalid guild id')
+            return
+
         async with ctx.typing():
             embed = discord.Embed(title="Server status")
             embed.set_thumbnail(url='https://dungeoncrawler.xyz/img/favicons/favicon.png') 
@@ -87,6 +106,10 @@ class GameSystem(commands.Cog):
 
     @server.command()
     async def start(self, ctx:commands.Context, *, service = None):
+        if not self.check_guild(ctx):
+            await ctx.send(f'Invalid guild id')
+            return
+
         async with ctx.typing():
             embed = discord.Embed(title="Server status")
             embed.set_thumbnail(url='https://dungeoncrawler.xyz/img/favicons/favicon.png') 
