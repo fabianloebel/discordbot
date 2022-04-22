@@ -20,6 +20,7 @@ _GUILD = os.getenv('DISCORD_GUILD')
 bot = commands.Bot(command_prefix='?')
 
 bot.load_extension("cogs.greeter")
+bot.load_extension("cogs.gif")
 bot.load_extension("cogs.music")
 bot.load_extension("cogs.gamesystem")
 
