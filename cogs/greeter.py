@@ -95,7 +95,7 @@ class Greeter(commands.Cog):
         """ Gif stuff """
         gif_url = get_gif(search) #Collects word after !gif
 
-        embed = discord.Embed()
+        embed = discord.Embed(title=f"Tenor GIF", description=f"Search term: {search}",)
         embed.set_image(url=gif_url)
         await ctx.send(embed=embed)
 
