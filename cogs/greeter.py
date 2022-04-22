@@ -59,8 +59,8 @@ class Greeter(commands.Cog):
 
         msg = f'This bot can stream music from youtube! \n ' \
               f'For an overview of all commands try `?help` \n\n' \
-              f'To add the Partybot to your own server, just klick this link: [invite!]({url})\n'
-              f'If you want to host your own instance, checkout the [repository](https://gitlab.com/darktin30/tssetse-bot)!\n' \
+              f'To add the Partybot to your own server, just klick this link: [invite!]({url})\n' \
+              f'If you want to host your own instance, checkout the [repository](https://gitlab.com/darktin30/tssetse-bot)!\n' 
 
         embed = discord.Embed(description=f'**About Partybot** \n\n {msg}')
         await ctx.send(embed=embed)
