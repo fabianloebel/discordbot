@@ -65,7 +65,7 @@ class Greeter(commands.Cog):
         embed = discord.Embed(description=f'**About Partybot** \n\n {msg}')
         await ctx.send(embed=embed)
 
-    def get_gif(search):
+    def get_gif(self, search = "Unicorn"):
         load_dotenv()
         tenor_token = os.getenv('TENOR_TOKEN')
         
@@ -91,9 +91,9 @@ class Greeter(commands.Cog):
         return data['results'][0]['media'][0]['gif']['url']
 
     @commands.command(name='gif', help='Fetches gif for supplied search term')
-    async def _gif(self, ctx, *, search: str, member: discord.Member = None):
+    async def _gif(self, ctx: commands.Context, *, search = "Unicorn"):
         """ Gif stuff """
-        gif_url = get_gif(search) #Collects word after !gif
+        gif_url = self.get_gif(search) #Collects word after !gif
 
         embed = discord.Embed()
         embed.set_image(url=gif_url)
