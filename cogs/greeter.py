@@ -1,6 +1,7 @@
 import os
 import discord
 import random
+import requests
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -53,6 +54,7 @@ class Greeter(commands.Cog):
         permissions = 271969376
         url = f'https://discord.com/oauth2/authorize?client_id={client_id}&permissions={permissions}&scope=bot'
 
+        # https://discord.com/oauth2/authorize?client_id=779845598068867072&permissions=271969376&scope=bot
         # TODO use discord.utils.outh_url to auto generate URL
 
         msg = f'This bot can stream music from youtube! \n ' \
@@ -61,5 +63,37 @@ class Greeter(commands.Cog):
               f'I on the other hand can just klick this link: [invite!]({url}) ;)\n'
 
         embed = discord.Embed(description=f'**About Partybot** \n\n {msg}')
+        await ctx.send(embed=embed)
+
+    def get_gif(search_term):
+        load_dotenv()
+        tenor_token = os.getenv('TENOR_TOKEN')
+        
+        response = requests.get("https://g.tenor.com/v1/search?q={}&key={}&limit=1".format(search_term, tenor_token))
+        data = response.json()
+    
+        ''' 
+        # see urls for all GIFs
+    
+        for result in data['results']:
+            print('- result -')
+            #print(result)
+        
+            for media in result['media']:
+                print('- media -')
+                print(media)
+                print(media['gif'])
+                print('url:', media['gif']['url'])
+        '''
+         
+        return data['results'][0]['media'][0]['gif']['url']
+
+    @commands.command(name='gif', help='Fetches gif for supplied search term')
+    async def _gif(self, ctx, *, member: discord.Member = None):
+        """ Gif stuff """
+        gif_url = get_gif(message.content.lower()[5:]) #Collects word after !gif
+
+        embed = discord.Embed()
+        embed.set_image(url=gif_url)
         await ctx.send(embed=embed)
 
