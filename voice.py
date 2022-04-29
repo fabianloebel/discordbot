@@ -175,11 +175,14 @@ class VoiceState:
                 else:
                     # FIXME: Remove workaround and fix: "play not working after last song finished playing issue"
 
-                    try:
-                        async with timeout(180):  # 3 minutes
-                            self.current = await self.songs.get()
-                    except asyncio.TimeoutError:
-                        continue
+                    self.current = await self.songs.get()
+
+                    # Makes bot leave if no new song is added after 3 minutes
+                    #try:
+                    #    async with timeout(180):  # 3 minutes
+                    #       self.current = await self.songs.get()
+                    #except asyncio.TimeoutError:
+                    #    continue
                     #    self.bot.loop.create_task(self.stop())
                     #    self.exists = False
                     #    return
