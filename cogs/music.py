@@ -368,6 +368,12 @@ class Music(commands.Cog):
                     await ctx.send('Enqueued {}'.format(str(source)))
 
 
+    @commands.Cog.listener()
+    async def on_disconnect(self):
+        self.cog_unload()
+        self.voice_states = {}
+
+
     # Leave if last song ended 600 sec ago
     #@commands.Cog.listener()
     #async def on_voice_state_update(self, member, before, after):
