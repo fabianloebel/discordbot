@@ -3,6 +3,7 @@
 import os
 from dotenv import load_dotenv
 import logging
+import asyncio
 
 import discord
 from discord.ext import commands
@@ -24,7 +25,7 @@ bot.load_extension("cogs.gif")
 bot.load_extension("cogs.music")
 bot.load_extension("cogs.gamesystem")
 
-
+GUILD_VC_TIMER = {}
 
 @bot.event 
 async def on_error(event, *args, **kwargs): 
@@ -37,5 +38,45 @@ async def on_error(event, *args, **kwargs):
 @bot.event
 async def on_ready():
    print(f'{bot.user.name} has connected to Discord!') 
+
+
+@bot.event
+# runs on every leave, join, defen, mute
+async def on_voice_state_update(member, before, after):
+    # was event triggered by bot?
+    if member.id == bot.user.id:
+        return
+    
+    # when before channel != None means usser has left a channel
+    if before.channel != None:
+        voice = discord.utils.get(bot.voice_clients, channel__guild__id = before.channel.guild.id)
+
+        if voice == None:
+            return
+
+        # if voice channel left by user not equal to bot voice channel
+        if voice.channel.id != before.channel.id:
+            return
+
+        # if voice channel has only 1 member (including bot)
+        if len(voice.channel.members) <= 1:
+
+            GUILD_VC_TIMER[before.channel.guild.id] = 0
+
+            while True:
+                await asyncio.sleep(1)
+
+                GUILD_VC_TIMER[before.channel.guild.id] += 1
+
+                # if voice channel has more than 1 member or bot already disconnected
+                if len(voice.channel.members) >= 2 or not voice.is_connected():
+                    break
+
+                # if bot was alone for more than 60 sec
+                if GUILD_VC_TIMER[before.channel.guild.id] >= 60:
+                    await voice.disconnect()
+                    return 
+
+            
 
 bot.run(_TOKEN)
