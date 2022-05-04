@@ -189,6 +189,8 @@ class VoiceState:
                 
                 self.song_history.insert(0, self.current)
                 self.current.source.volume = self._volume
+                # voice.play never returns after bot reconnected to discord
+                # maybe current source is buggy
                 self.voice.play(self.current.source, after=self.play_next_song)
                 await self.current.source.channel.send(embed=self.current.create_embed())
             

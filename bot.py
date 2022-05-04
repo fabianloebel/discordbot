@@ -74,6 +74,12 @@ async def on_voice_state_update(member, before, after):
 
                 # if bot was alone for more than 60 sec
                 if GUILD_VC_TIMER[before.channel.guild.id] >= 60:
+
+                    # Cleanup music state
+                    if ("Music" in bot.cogs) and (before.channel.guild.id in bot.cogs["Music"].voice_states):
+                        await bot.cogs["Music"].voice_states[before.channel.guild.id].stop()
+                        del bot.cogs["Music"].voice_states[before.channel.guild.id]
+
                     await voice.disconnect()
                     return 
 
