@@ -137,6 +137,10 @@ class Music(commands.Cog):
     async def _resume(self, ctx: commands.Context):
         """Resumes a currently paused song."""
 
+        if ctx.voice_state is None:
+            await ctx.message.add_reaction('No song currently paused!')
+            return
+
         if  ctx.voice_state.voice.is_paused():
             ctx.voice_state.voice.resume()
             await ctx.message.add_reaction('⏯')
