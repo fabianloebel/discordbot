@@ -118,7 +118,6 @@ class VoiceState:
                 # the player will disconnect due to performance
                 # reasons.
 
-                # FIXME: Find bug that halts music playing
                 if self.autoplay and self.current:
                     try:
                         async with timeout(3):

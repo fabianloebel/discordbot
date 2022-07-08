@@ -7,3 +7,5 @@ bs4
 httpx
 ffmpeg
 spotipy
+html5lib
+google-api-python-client

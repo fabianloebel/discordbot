@@ -373,27 +373,6 @@ class Music(commands.Cog):
         self.cog_unload()
         self.voice_states = {}
 
-
-    # Leave if last song ended 600 sec ago
-    #@commands.Cog.listener()
-    #async def on_voice_state_update(self, member, before, after):
-    #
-    #    if not member.id == self.bot.user.id:
-    #        return
-    #
-    #    elif before.channel is None:
-    #        voice = after.channel.guild.voice_client
-    #        time = 0
-    #        while True:
-    #            await asyncio.sleep(1)
-    #            time = time + 1
-    #            if voice.is_playing() and not voice.is_paused():
-    #                time = 0
-    #            if time == 600:
-    #                await voice.disconnect()
-    #            if not voice.is_connected():
-    #                break
-    
     @_join.before_invoke
     @_play.before_invoke
     async def ensure_voice_state(self, ctx: commands.Context):
