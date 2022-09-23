@@ -4,6 +4,7 @@ This bot is derived from the [GodecBot](https://github.com/Lenart12/GodecBot) an
 * Greet new members
 * Play music from youtube
 * Parse Spotify song and playlist links
+* Start and stop game servers running on same machine
 
 # Setup
 
