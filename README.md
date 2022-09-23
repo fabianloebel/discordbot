@@ -19,9 +19,11 @@ Direct installation:
 
 Installation in a virtual environment (RECOMMENDED):
 
-`python3 -m venv /path/to/venv`
-`source /path/to/venv/bin/activate`
-`pip3 install -r requirements`
+```
+python3 -m venv /path/to/venv
+source /path/to/venv/bin/activate
+pip3 install -r requirements
+```
 
 Next to those requirements you also need ffmpeg installed on the machine that is running the bot:
 
