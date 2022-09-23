@@ -1,8 +1,9 @@
-# First: Ignore the bot name :D
+# Discord bot
 
-This bot can:
+This bot is derived from the [GodecBot](https://github.com/Lenart12/GodecBot) and can:
 * Greet new members
 * Play music from youtube
+* Parse Spotify song and playlist links
 
 # Setup
 
